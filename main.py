@@ -43,11 +43,12 @@ def warn(filesystem: str, used: str):
             'text': f'WARNING: {filesystem}: used {used}',
         }
 
-        response = requests.post(
+        _ = requests.post(
             api_endpoint,
             headers=headers,
             json=json_data,
         )
+
     except Exception as e:
         logging.log(f'error due to {e}')
 

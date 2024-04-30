@@ -1,0 +1,17 @@
+version: "3"
+services:
+  space-warner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: space-warner
+    environment:
+      - API_ENDPOINT=${API_ENDPOINT}
+      - FILE_SYSTEMS=${FILE_SYSTEMS}
+      - THRESHOLD=${THRESHOLD}
+    working_dir: /root/app/
+    volumes:
+      - /home:/home  # make sure all volumes are added
+    stdin_open: true
+    tty: true
+    command: python3 main.py

@@ -40,7 +40,7 @@ def warn(filesystem: str, used: str):
         }
 
         json_data = {
-            'text': f'WARNING: {filesystem}: used {used}%',
+            'text': f'WARNING: {filesystem}: used {used}',
         }
 
         response = requests.post(

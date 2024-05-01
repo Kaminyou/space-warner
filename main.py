@@ -59,8 +59,6 @@ def main():
     trigger_interval = os.environ.get('TRIGGER_INTERVAL', 60)
     warning_interval = os.environ.get('WARNING_INTERVAL', 3600)
 
-    warning_status = False
-
     while True:
 
         disk_usage_info = get_disk_usage()
@@ -76,11 +74,6 @@ def main():
                     warn(filesystem=info['filesystem'], used=info['used%'])
 
         if is_warning:
-            warning_status = True
-        else:
-            warning_status = False
-
-        if warning_status:
             time.sleep(warning_interval)
         else:
             time.sleep(trigger_interval)

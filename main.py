@@ -54,6 +54,27 @@ def warn(filesystem: str, used: str) -> None:
         logging.log(f'error due to {e}')
 
 
+def parse_filesystem_setting() -> t.Dict[str, float]:
+    global_threshold = float(os.environ.get('GLOBAL_THRESHOLD', 1.0))
+    file_systems_and_thresholds = os.environ.get('FILE_SYSTEMS', []).split(',')
+    file_system_to_threshold = {}
+
+    for file_system_and_threshold in file_systems_and_thresholds:
+        if '::' in file_system_and_threshold:
+            file_system, threshold = file_system_and_threshold.split('::')
+            threshold = float(threshold)
+        else:
+            file_system = file_system_and_threshold
+            threshold = global_threshold
+
+        if file_system in file_system_to_threshold:
+            raise ValueError('Duplicated file systems are detected')
+
+        file_system_to_threshold[file_system] = threshold
+
+    return file_system_to_threshold
+
+
 def main():
 
     trigger_interval = os.environ.get('TRIGGER_INTERVAL', 60)
@@ -62,14 +83,13 @@ def main():
     while True:
 
         disk_usage_info = get_disk_usage()
-        target_filesystems = set(os.environ.get('FILE_SYSTEMS', []).split(','))
-        threshold = float(os.environ.get('THRESHOLD', 1.0))
+        file_system_to_threshold = parse_filesystem_setting()
 
         is_warning = False
         for info in disk_usage_info:
-            if info['filesystem'] in target_filesystems:
+            if info['filesystem'] in file_system_to_threshold:
                 used = float(info['used%'].replace('%', ''))
-                if used >= threshold:
+                if used >= file_system_to_threshold[info['filesystem']]:
                     is_warning = True
                     warn(filesystem=info['filesystem'], used=info['used%'])
 

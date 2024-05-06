@@ -8,7 +8,7 @@ services:
     environment:
       - API_ENDPOINT=${API_ENDPOINT}
       - FILE_SYSTEMS=${FILE_SYSTEMS}
-      - THRESHOLD=${THRESHOLD}
+      - GLOBAL_THRESHOLD=${GLOBAL_THRESHOLD}
       - TRIGGER_INTERVAL=${TRIGGER_INTERVAL}
       - WARNING_INTERVAL=${WARNING_INTERVAL}
     working_dir: /root/app/

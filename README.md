@@ -10,7 +10,7 @@ Send a message to your Slack whenever your space is becoming full!
 1. Create `.env`
 ```
 API_ENDPOINT=  # YOUR SLACK API ENDPOINT
-FILE_SYSTEMS=  # separated by , and :: can be used to set a local threshold e.g., xxx::0.6,yyy,zzz::0.5
+FILE_SYSTEMS=  # separated by , and :: can be used to set a local threshold e.g., /xxx/ooo::0.6,/yyy/aaa,/zzz::0.5
 GLOBAL_THRESHOLD=  # e.g., 0.70 -> send a message when space usage >= 70% (will be considered when a local threshold is not set)
 TRIGGER_INTERVAL=60  # second # if there is no warning triggered previously -> interval to check the system
 WARNING_INTERVAL=3600  # second # once a warning is triggered, trigger again after WARNING_INTERVAL

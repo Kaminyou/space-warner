@@ -2,6 +2,7 @@
 ![version](https://img.shields.io/badge/version-1.1.1-red)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Kaminyou/space-warner/blob/main/LICENSE)
 ![linting workflow](https://github.com/Kaminyou/space-warner/actions/workflows/main.yml/badge.svg)
+![testing workflow](https://github.com/Kaminyou/space-warner/actions/workflows/python-package.yml/badge.svg)
 # space-warner
 Send a message to your Slack whenever your space is becoming full!
 

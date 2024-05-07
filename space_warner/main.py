@@ -75,28 +75,40 @@ def parse_filesystem_setting() -> t.Dict[str, float]:
     return file_system_to_threshold
 
 
+def monitor(
+    disk_usage_info: t.List[t.Dict[str, t.Any]],
+    file_system_to_threshold: t.Dict[str, float],
+    trigger_interval: int,
+    warning_interval: int,
+) -> None:
+    is_warning = False
+    for info in disk_usage_info:
+        if info['filesystem'] in file_system_to_threshold:
+            used = float(info['used%'].replace('%', ''))
+            if used >= file_system_to_threshold[info['filesystem']]:
+                is_warning = True
+                warn(filesystem=info['filesystem'], used=info['used%'])
+
+    if is_warning:
+        time.sleep(warning_interval)
+    else:
+        time.sleep(trigger_interval)
+
+
 def main():
 
     trigger_interval = os.environ.get('TRIGGER_INTERVAL', 60)
     warning_interval = os.environ.get('WARNING_INTERVAL', 3600)
 
     while True:
-
         disk_usage_info = get_disk_usage()
         file_system_to_threshold = parse_filesystem_setting()
-
-        is_warning = False
-        for info in disk_usage_info:
-            if info['filesystem'] in file_system_to_threshold:
-                used = float(info['used%'].replace('%', ''))
-                if used >= file_system_to_threshold[info['filesystem']]:
-                    is_warning = True
-                    warn(filesystem=info['filesystem'], used=info['used%'])
-
-        if is_warning:
-            time.sleep(warning_interval)
-        else:
-            time.sleep(trigger_interval)
+        monitor(
+            disk_usage_info=disk_usage_info,
+            file_system_to_threshold=file_system_to_threshold,
+            trigger_interval=trigger_interval,
+            warning_interval=warning_interval,
+        )
 
 
 if __name__ == '__main__':
